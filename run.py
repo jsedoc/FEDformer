@@ -8,10 +8,10 @@ import numpy as np
 
 
 def main():
-    fix_seed = 2021
-    random.seed(fix_seed)
-    torch.manual_seed(fix_seed)
-    np.random.seed(fix_seed)
+    # fix_seed = 2021
+    # random.seed(fix_seed)
+    # torch.manual_seed(fix_seed)
+    # np.random.seed(fix_seed)
 
     parser = argparse.ArgumentParser(description='Autoformer & Transformer family for Time Series Forecasting')
 
@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--task_id', type=str, default='test', help='task id')
     parser.add_argument('--model', type=str, default='FEDformer',
                         help='model name, options: [FEDformer, Autoformer, Informer, Transformer]')
+    parser.add_argument('--seed', type=int, default=2021, help='random seed -1 means not set')
 
     # supplementary config for FEDformer model
     parser.add_argument('--version', type=str, default='Fourier',
@@ -93,6 +94,12 @@ def main():
 
     args = parser.parse_args()
 
+    if args.seed != -1:
+        fix_seed = args.seed
+        random.seed(fix_seed)
+        torch.manual_seed(fix_seed)
+        np.random.seed(fix_seed)
+
     args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
 
     if args.use_gpu and args.use_multi_gpu:
@@ -109,11 +116,12 @@ def main():
     if args.is_training:
         for ii in range(args.itr):
             # setting record of experiments
-            setting = '{}_{}_{}_modes{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_dt{}_{}_{}'.format(
+            setting = '{}_{}_{}_modes{}_seed{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_dt{}_{}_{}'.format(
                 args.task_id,
                 args.model,
                 args.mode_select,
                 args.modes,
+                args.seed,
                 args.data,
                 args.features,
                 args.seq_len,
