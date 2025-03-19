@@ -175,7 +175,7 @@ def main():
 
         if args.do_predict:
             print('>>>>>>>predicting : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-            exp.predict(setting, True)
+            exp.predict(setting)
 
         torch.cuda.empty_cache()
 
