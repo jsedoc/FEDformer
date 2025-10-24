@@ -239,8 +239,8 @@ class Exp_Main(Exp_Basic):
         preds = np.array(preds)
         trues = np.array(trues)
         print('test shape:', preds.shape, trues.shape)
-        preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
-        trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
+        preds = preds.reshape(-1, preds.shape[-2])
+        trues = trues.reshape(-1, trues.shape[-2])
         print('test shape:', preds.shape, trues.shape)
 
         # result save
@@ -258,8 +258,8 @@ class Exp_Main(Exp_Basic):
         f.close()
 
         np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
-        preds = test_loader.inverse_transform(preds)
-        trues = test_loader.inverse_transform(trues)
+        preds = test_loader.dataset.inverse_transform(preds)
+        trues = test_loader.dataset.inverse_transform(trues)
         np.save(folder_path + 'pred.npy', preds)
         np.save(folder_path + 'true.npy', trues)
 
